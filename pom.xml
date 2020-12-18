@@ -8,11 +8,6 @@
     <artifactId>PrintingSystem</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <properties>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.source>1.8</maven.compiler.source>
-    </properties>
-
     <dependencies>
 
         <!-- https://mvnrepository.com/artifact/junit/junit -->
@@ -24,5 +19,19 @@
         </dependency>
 
     </dependencies>
+
+    <!-- https://stackoverflow.com/questions/29888592/errorjava-javactask-source-release-8-requires-target-release-1-8 -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
