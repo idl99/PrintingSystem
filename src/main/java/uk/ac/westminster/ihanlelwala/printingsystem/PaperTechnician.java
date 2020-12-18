@@ -4,10 +4,12 @@ import java.util.Random;
 
 public class PaperTechnician implements Runnable {
 
+    private String threadGroup;
     private ServicePrinter printer;
     private String name;
 
-    public PaperTechnician(ServicePrinter printer, String name) {
+    public PaperTechnician(String threadGroup, ServicePrinter printer, String name) {
+        this.threadGroup = threadGroup;
         this.printer = printer;
         this.name = name;
     }

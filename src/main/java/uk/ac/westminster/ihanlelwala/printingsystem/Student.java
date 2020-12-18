@@ -2,18 +2,14 @@ package uk.ac.westminster.ihanlelwala.printingsystem;
 
 import java.util.Random;
 
-/**
- * TODO determine whether i need to to maintain a private variable to store the thread group
- *  to which the Student thread belongs to (as per the spec)
- *  because anyways we will be constructing an instance of this class and be using that to create an instance of Thread
- *  then the Thread instance will anyways keep a track of the thread group.
- */
 public class Student implements Runnable {
 
+    private String threadGroup;
     private Printer printer;
     private String name;
 
-    public Student(Printer printer, String name) {
+    public Student(String threadGroup, Printer printer, String name) {
+        this.threadGroup = threadGroup;
         this.printer = printer;
         this.name = name;
     }

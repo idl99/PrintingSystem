@@ -6,16 +6,21 @@ public class PrintingSystem {
 
         ServicePrinter printer = new LaserPrinter("HP Printer", 50, 100);
 
-        ThreadGroup students = new ThreadGroup("students");
+        String studentsThreadGroupName = "students";
+        ThreadGroup students = new ThreadGroup(studentsThreadGroupName);
+
+        Thread student1 = new Thread(students, new Student(studentsThreadGroupName, printer, "student1"));
+        Thread student2 = new Thread(students, new Student(studentsThreadGroupName, printer, "student2"));
+        Thread student3 = new Thread(students, new Student(studentsThreadGroupName, printer, "student3"));
+        Thread student4 = new Thread(students, new Student(studentsThreadGroupName, printer, "student4"));
+
+        String techniciansThreadGroupName = "technicians";
         ThreadGroup technicians = new ThreadGroup("technicians");
 
-        Thread student1 = new Thread(students, new Student(printer, "student1"));
-        Thread student2 = new Thread(students, new Student(printer, "student2"));
-        Thread student3 = new Thread(students, new Student(printer, "student3"));
-        Thread student4 = new Thread(students, new Student(printer, "student4"));
-
-        Thread paperTechnician = new Thread(technicians, new PaperTechnician(printer, "Mr. Paper Technician"));
-        Thread tonerTechnician = new Thread(technicians, new TonerTechnician(printer, "Mr. Toner Technician"));
+        Thread paperTechnician = new Thread(technicians,
+                new PaperTechnician(techniciansThreadGroupName, printer, "Mr. Paper Technician"));
+        Thread tonerTechnician = new Thread(technicians,
+                new TonerTechnician(techniciansThreadGroupName, printer, "Mr. Toner Technician"));
 
         student1.start();
         student2.start();
