@@ -10,7 +10,6 @@ import java.util.Random;
  */
 public class Student implements Runnable {
 
-    public static final int NUMBER_OF_DOCUMENTS_PER_STUDENT = 5;
     private Printer printer;
     private String name;
 
@@ -22,16 +21,17 @@ public class Student implements Runnable {
     @Override
     public void run() {
         Random random = new Random();
+        int numberOfDocumentsPerStudent = 5;
 
-        for (int i = 1; i <= NUMBER_OF_DOCUMENTS_PER_STUDENT; i++) {
+        for (int i = 1; i <= numberOfDocumentsPerStudent; i++) {
 
             int MINIMUM_NUMBER_OF_PAGE_PER_DOCUMENT = 1;
-            int MAXIMUM_NUMBER_OF_PAGE_PER_DOCUMENT = 50;
+            int MAXIMUM_NUMBER_OF_PAGE_PER_DOCUMENT = 10;
             int numberOfPages = MINIMUM_NUMBER_OF_PAGE_PER_DOCUMENT +
                     random.nextInt(MAXIMUM_NUMBER_OF_PAGE_PER_DOCUMENT - MINIMUM_NUMBER_OF_PAGE_PER_DOCUMENT); // Adding 1 to ensure document is at least one page in length
             String documentName = "cwk" + i;
 
-            System.out.printf("Printing document: %s of student: %s", name, documentName);
+            // System.out.printf("Printing document: %s of student: %s with page length: %s.\n", documentName, name, numberOfPages);
             Document document = new Document(this.name, documentName, numberOfPages);
             printer.printDocument(document);
 
@@ -42,11 +42,11 @@ public class Student implements Runnable {
                 Thread.sleep(sleepingTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                System.out.printf("%s was interrupted during sleeping time after printing \'%s\' document.",
+                System.out.printf("%s was interrupted during sleeping time after printing \'%s\' document.\n",
                         sleepingTime, documentName);
             }
         }
 
-        System.out.printf("Student %s finished printing documents.", name);
+        System.out.printf("Student %s finished printing documents.\n", name);
     }
 }
