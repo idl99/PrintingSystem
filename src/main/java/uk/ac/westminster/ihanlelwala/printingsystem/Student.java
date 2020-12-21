@@ -39,15 +39,18 @@ public class Student implements Runnable {
 
             // Excerpt from spec
             // Student's behaviour is to ... He/she should "sleep" for a random amount of time between each printing request.
-            int MINIMUM_SLEEPING_TIME = 1000;
-            int MAXIMUM_SLEEPING_TIME = 5000;
-            int sleepingTime = MINIMUM_SLEEPING_TIME + random.nextInt(MAXIMUM_SLEEPING_TIME - MINIMUM_SLEEPING_TIME);
-            try {
-                Thread.sleep(sleepingTime);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                System.out.printf("%s was interrupted during sleeping time after printing \'%s\' document.\n",
-                        sleepingTime, documentName);
+            boolean lastDocument = i == numberOfDocumentsPerStudent;
+            if (!lastDocument) {
+                int MINIMUM_SLEEPING_TIME = 1000;
+                int MAXIMUM_SLEEPING_TIME = 5000;
+                int sleepingTime = MINIMUM_SLEEPING_TIME + random.nextInt(MAXIMUM_SLEEPING_TIME - MINIMUM_SLEEPING_TIME);
+                try {
+                    Thread.sleep(sleepingTime);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    System.out.printf("%s was interrupted during sleeping time after printing \'%s\' document.\n",
+                            sleepingTime, documentName);
+                }
             }
         }
 
