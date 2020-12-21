@@ -23,8 +23,7 @@ public class LaserPrinter implements ServicePrinter {
     public synchronized void replaceTonerCartridge() {
         boolean tonerCannotBeReplaced = currentTonerLevel >= MINIMUM_TONER_LEVEL;
         while (tonerCannotBeReplaced) {
-            System.out.printf("Cannot replace toner. Toner Level should be at a maximum of %d before it can be replaced." + "Current Toner Level is %d.\n",
-                    MINIMUM_TONER_LEVEL, currentTonerLevel);
+            System.out.printf("Checking toner... Toner need not be replaced at this time. Current Toner Level is %d\n", currentTonerLevel);
             try {
                 wait(5000);
                 tonerCannotBeReplaced = currentTonerLevel >= MINIMUM_TONER_LEVEL;
@@ -34,9 +33,9 @@ public class LaserPrinter implements ServicePrinter {
         }
 
         // Allow toner technician to refill cartridge
-        System.out.println("Replacing toner cartridge...");
+        System.out.printf("Checking toner... Toner is low. Current Toner Level is %d. Replacing toner cartridge... ", currentTonerLevel);
         currentTonerLevel += PAGES_PER_TONER_CARTRIDGE;
-        System.out.println("Successfully replaced Toner Cartridge.");
+        System.out.printf("Successfully replaced Toner Cartridge. New Toner Level is %d.\n", currentTonerLevel);
 
          notifyAll(); // If this method is not invoked, then the threads infinitely waiting (like Student threads)
                         // will not execute
@@ -46,8 +45,8 @@ public class LaserPrinter implements ServicePrinter {
     public synchronized void refillPaper() {
         boolean printerCannotBeRefilled = (currentPaperLevel + SHEETS_PER_PACK) > FULL_PAPER_TRAY;
         while (printerCannotBeRefilled) {
-            System.out.printf("Cannot refill printer with paper at this time. Current paper level is %d. " +
-                    "Maximum paper level is %d.\n", currentPaperLevel, FULL_PAPER_TRAY);
+            System.out.printf("Checking paper... Paper Tray cannot be refilled at this time (exceeds maximum paper level). " +
+                    "Current paper level is %d and Maximum paper level is %d.\n", currentPaperLevel, FULL_PAPER_TRAY);
             try {
                 wait(5000);
                 printerCannotBeRefilled = (currentPaperLevel + SHEETS_PER_PACK) > FULL_PAPER_TRAY;
@@ -57,9 +56,9 @@ public class LaserPrinter implements ServicePrinter {
         }
 
         // Allow paper technician to refill paper
-        System.out.println("Refilling printer with paper...");
+        System.out.print("Checking paper... Refilling printer with paper... ");
         currentPaperLevel += SHEETS_PER_PACK;
-        System.out.printf("Refilled tray with pack of paper. New Paper Level: %d\n", currentPaperLevel);
+        System.out.printf("Refilled tray with pack of paper. New Paper Level: %d.\n", currentPaperLevel);
 
         notifyAll(); // If this method is not invoked, then the threads infinitely waiting (like Student threads)
                         // will not execute
@@ -67,22 +66,29 @@ public class LaserPrinter implements ServicePrinter {
 
     @Override
     public synchronized void printDocument(Document document) {
+
+        String student = document.getUserID();
+        String docName = document.getDocumentName();
         int numberOfPages = document.getNumberOfPages();
+
         boolean insufficientPaperLevel = numberOfPages > currentPaperLevel;
         boolean insufficientTonerLevel = numberOfPages > currentTonerLevel;
 
         while (insufficientPaperLevel || insufficientTonerLevel) {
             // User cannot print
             if(insufficientPaperLevel && insufficientTonerLevel) {
-                System.out.printf("Out of paper and toner. Current Paper Level is %d and Toner Level is %d. The document you wish to print is %d pages.\n",
+                System.out.printf("[%s][%s][%dpg] - Out of paper and toner. Current Paper Level is %d and Toner Level is %d.\n",
+                        student, docName, numberOfPages,
                         currentPaperLevel, currentTonerLevel, numberOfPages);
             }
             else if(insufficientPaperLevel) {
-                System.out.printf("Out of paper. Current Paper Level is %d. The document you wish to print is %d pages.\n",
+                System.out.printf("[%s][%s][%dpg] - Out of paper. Current Paper Level is %d.\n",
+                        student, docName, numberOfPages,
                         currentPaperLevel, numberOfPages);
             }
             else {
-                System.out.printf("Out of toner. Current Toner Level is %d. The document you wish to print is %d pages.\n",
+                System.out.printf("[%s][%s][%dpg] - Out of toner. Current Toner Level is %d.\n",
+                        student, docName, numberOfPages,
                         currentTonerLevel, numberOfPages);
             }
 
@@ -95,11 +101,13 @@ public class LaserPrinter implements ServicePrinter {
             }
         }
 
-        System.out.printf("Printing document with page length: %d.\n", numberOfPages);
+        System.out.printf("[%s][%s][%dpg] - Printing document with page length: %d.\n",
+                student, docName, numberOfPages, numberOfPages);
         currentPaperLevel -= numberOfPages;
         currentTonerLevel -= numberOfPages;
         numberOfDocumentsPrinted++;
-        System.out.printf("Successfully printed the document. New Paper Level is %d and Toner Level is %d.\n",
+        System.out.printf("[%s][%s][%dpg] - Successfully printed the document. New Paper Level is %d and Toner Level is %d.\n",
+                student, docName, numberOfPages,
                 currentPaperLevel, currentTonerLevel);
     }
 
