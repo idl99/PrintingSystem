@@ -37,6 +37,8 @@ public class Student implements Runnable {
             Document document = new Document(this.name, documentName, numberOfPages);
             printer.printDocument(document);
 
+            // Excerpt from spec
+            // Student's behaviour is to ... He/she should "sleep" for a random amount of time between each printing request.
             int MINIMUM_SLEEPING_TIME = 1000;
             int MAXIMUM_SLEEPING_TIME = 5000;
             int sleepingTime = MINIMUM_SLEEPING_TIME + random.nextInt(MAXIMUM_SLEEPING_TIME - MINIMUM_SLEEPING_TIME);
