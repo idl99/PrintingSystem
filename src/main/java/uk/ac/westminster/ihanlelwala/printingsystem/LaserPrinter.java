@@ -23,7 +23,8 @@ public class LaserPrinter implements ServicePrinter {
     public synchronized void replaceTonerCartridge() {
         boolean tonerCannotBeReplaced = currentTonerLevel >= MINIMUM_TONER_LEVEL;
         while (tonerCannotBeReplaced) {
-            System.out.printf("Checking toner... Toner need not be replaced at this time. Current Toner Level is %d\n", currentTonerLevel);
+            System.out.printf(ConsoleColors.PURPLE + "Checking toner... " + ConsoleColors.RESET +
+                    "Toner need not be replaced at this time. Current Toner Level is %d\n", currentTonerLevel);
             try {
                 wait(5000);
                 tonerCannotBeReplaced = currentTonerLevel >= MINIMUM_TONER_LEVEL;
@@ -33,9 +34,10 @@ public class LaserPrinter implements ServicePrinter {
         }
 
         // Allow toner technician to refill cartridge
-        System.out.printf("Checking toner... Toner is low. Current Toner Level is %d. Replacing toner cartridge... ", currentTonerLevel);
+        System.out.printf(ConsoleColors.PURPLE + "Checking toner... " +
+                "Toner is low. Current Toner Level is %d. Replacing toner cartridge... ", currentTonerLevel);
         currentTonerLevel += PAGES_PER_TONER_CARTRIDGE;
-        System.out.printf("Successfully replaced Toner Cartridge. New Toner Level is %d.\n", currentTonerLevel);
+        System.out.printf("Successfully replaced Toner Cartridge. New Toner Level is %d.\n" + ConsoleColors.RESET, currentTonerLevel);
 
          notifyAll(); // If this method is not invoked, then the threads infinitely waiting (like Student threads)
                         // will not execute
@@ -45,7 +47,8 @@ public class LaserPrinter implements ServicePrinter {
     public synchronized void refillPaper() {
         boolean printerCannotBeRefilled = (currentPaperLevel + SHEETS_PER_PACK) > FULL_PAPER_TRAY;
         while (printerCannotBeRefilled) {
-            System.out.printf("Checking paper... Paper Tray cannot be refilled at this time (exceeds maximum paper level). " +
+            System.out.printf(ConsoleColors.YELLOW + "Checking paper... " + ConsoleColors.RESET +
+                    "Paper Tray cannot be refilled at this time (exceeds maximum paper level). " +
                     "Current paper level is %d and Maximum paper level is %d.\n", currentPaperLevel, FULL_PAPER_TRAY);
             try {
                 wait(5000);
@@ -56,9 +59,9 @@ public class LaserPrinter implements ServicePrinter {
         }
 
         // Allow paper technician to refill paper
-        System.out.print("Checking paper... Refilling printer with paper... ");
+        System.out.print(ConsoleColors.YELLOW + "Checking paper... Refilling printer with paper... ");
         currentPaperLevel += SHEETS_PER_PACK;
-        System.out.printf("Refilled tray with pack of paper. New Paper Level: %d.\n", currentPaperLevel);
+        System.out.printf("Refilled tray with pack of paper. New Paper Level: %d.\n" + ConsoleColors.RESET, currentPaperLevel);
 
         notifyAll(); // If this method is not invoked, then the threads infinitely waiting (like Student threads)
                         // will not execute
@@ -77,15 +80,15 @@ public class LaserPrinter implements ServicePrinter {
         while (insufficientPaperLevel || insufficientTonerLevel) {
             // User cannot print
             if(insufficientPaperLevel && insufficientTonerLevel) {
-                System.out.printf("[%s][%s][%dpg] - Out of paper and toner. Current Paper Level is %d and Toner Level is %d.\n",
+                System.out.printf(ConsoleColors.RED + "[%s][%s][%dpg] - Out of paper and toner. Current Paper Level is %d and Toner Level is %d.\n" + ConsoleColors.RESET,
                         student, docName, numberOfPages, currentPaperLevel, currentTonerLevel);
             }
             else if(insufficientPaperLevel) {
-                System.out.printf("[%s][%s][%dpg] - Out of paper. Current Paper Level is %d.\n",
+                System.out.printf(ConsoleColors.RED + "[%s][%s][%dpg] - Out of paper. Current Paper Level is %d.\n" + ConsoleColors.RESET,
                         student, docName, numberOfPages, currentPaperLevel);
             }
             else {
-                System.out.printf("[%s][%s][%dpg] - Out of toner. Current Toner Level is %d.\n",
+                System.out.printf(ConsoleColors.RED + "[%s][%s][%dpg] - Out of toner. Current Toner Level is %d.\n" + ConsoleColors.RESET,
                         student, docName, numberOfPages, currentTonerLevel);
             }
 

@@ -49,6 +49,6 @@ public class Student implements Runnable {
             }
         }
 
-        System.out.printf("Student %s finished printing documents.\n", name);
+        System.out.printf(ConsoleColors.GREEN + "Student %s finished printing documents.\n" + ConsoleColors.RESET, name);
     }
 }

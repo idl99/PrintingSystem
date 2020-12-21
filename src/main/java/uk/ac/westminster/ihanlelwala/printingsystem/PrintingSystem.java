@@ -41,7 +41,11 @@ public class PrintingSystem {
                                     // Same applies for toner technician.
         // tonerTechnician.join();
 
-        System.out.println("All tasks completed. Printing printer status...");
+        System.out.println(ConsoleColors.GREEN + "\nAll tasks completed. Printing printer status...\n" + ConsoleColors.RESET);
+
+        System.out.print("==================================================\n" +
+                          "                PRINTER SUMMARY                  \n" +
+                          "=================================================\n");
         System.out.println(printer.toString());
 
         System.exit(0);
