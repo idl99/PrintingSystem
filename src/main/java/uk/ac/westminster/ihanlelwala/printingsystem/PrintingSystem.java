@@ -4,7 +4,11 @@ public class PrintingSystem {
 
     public static void main(String[] args) throws InterruptedException {
 
-        ServicePrinter printer = new LaserPrinter("HP Printer", 50, 100);
+        // Set current Toner Level to a reasonably lesser value considering the number of documents and minimum number of pages per document
+        // to increase the chances of at least one toner refill.
+        // Otherwise, if Toner Level is set to a higher value, there's a chance a Toner refill will never be required
+        // before the printing jobs are over.
+        ServicePrinter printer = new LaserPrinter("HP Printer", 50, 50);
 
         String studentsThreadGroupName = "students";
         ThreadGroup students = new ThreadGroup(studentsThreadGroupName);
