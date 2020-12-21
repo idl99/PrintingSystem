@@ -12,10 +12,10 @@ public class LaserPrinter implements ServicePrinter {
     private int currentTonerLevel;
     private int numberOfDocumentsPrinted;
 
-    public LaserPrinter(String id, int currentPaperLevel, int currentTonerLevel) {
+    public LaserPrinter(String id, int initialPaperLevel, int initialTonerLevel) {
         this.id = id;
-        this.currentPaperLevel = currentPaperLevel;
-        this.currentTonerLevel = currentTonerLevel;
+        this.currentPaperLevel = initialPaperLevel;
+        this.currentTonerLevel = initialTonerLevel;
         this.numberOfDocumentsPrinted = 0;
     }
 
