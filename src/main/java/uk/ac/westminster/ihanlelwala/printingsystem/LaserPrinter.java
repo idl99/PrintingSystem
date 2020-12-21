@@ -78,18 +78,15 @@ public class LaserPrinter implements ServicePrinter {
             // User cannot print
             if(insufficientPaperLevel && insufficientTonerLevel) {
                 System.out.printf("[%s][%s][%dpg] - Out of paper and toner. Current Paper Level is %d and Toner Level is %d.\n",
-                        student, docName, numberOfPages,
-                        currentPaperLevel, currentTonerLevel, numberOfPages);
+                        student, docName, numberOfPages, currentPaperLevel, currentTonerLevel);
             }
             else if(insufficientPaperLevel) {
                 System.out.printf("[%s][%s][%dpg] - Out of paper. Current Paper Level is %d.\n",
-                        student, docName, numberOfPages,
-                        currentPaperLevel, numberOfPages);
+                        student, docName, numberOfPages, currentPaperLevel);
             }
             else {
                 System.out.printf("[%s][%s][%dpg] - Out of toner. Current Toner Level is %d.\n",
-                        student, docName, numberOfPages,
-                        currentTonerLevel, numberOfPages);
+                        student, docName, numberOfPages, currentTonerLevel);
             }
 
             try {
