@@ -33,12 +33,14 @@ public class PrintingSystem {
         student2.join();
         student3.join();
         student4.join();
-        paperTechnician.join();
-        tonerTechnician.join();
+        // paperTechnician.join(); // No need to wait for paper technician to finish refilling all 3 paper packs since printing jobs are over.
+                                    // Same applies for toner technician.
+        // tonerTechnician.join();
 
         System.out.println("All tasks completed. Printing printer status...");
         System.out.println(printer.toString());
 
+        System.exit(0);
     }
 
 }
