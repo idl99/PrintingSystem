@@ -22,7 +22,13 @@ public class Student implements Runnable {
         for (int i = 1; i <= numberOfDocumentsPerStudent; i++) {
 
             int MINIMUM_NUMBER_OF_PAGE_PER_DOCUMENT = 1;
+
+            // TODO verify if the following assumption is okay
+            // If this is greater than the Toner Level, then there is a problem eventually where Toner won't refill
+            // because Toner Level hasn't dropped below the specified threshold.
+            // But a student may want to print a document with more pages than the current toner level.
             int MAXIMUM_NUMBER_OF_PAGE_PER_DOCUMENT = 10;
+
             int numberOfPages = MINIMUM_NUMBER_OF_PAGE_PER_DOCUMENT +
                     random.nextInt(MAXIMUM_NUMBER_OF_PAGE_PER_DOCUMENT - MINIMUM_NUMBER_OF_PAGE_PER_DOCUMENT); // Adding 1 to ensure document is at least one page in length
             String documentName = "cwk" + i;
