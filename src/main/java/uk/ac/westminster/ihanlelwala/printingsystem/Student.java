@@ -22,7 +22,13 @@ public class Student implements Runnable {
         for (int i = 1; i <= numberOfDocumentsPerStudent; i++) {
 
             int MINIMUM_NUMBER_OF_PAGE_PER_DOCUMENT = 1;
+
+            // TODO verify if the following assumption is okay
+            // If this is greater than the Toner Level, then there is a problem eventually where Toner won't refill
+            // because Toner Level hasn't dropped below the specified threshold.
+            // But a student may want to print a document with more pages than the current toner level.
             int MAXIMUM_NUMBER_OF_PAGE_PER_DOCUMENT = 10;
+
             int numberOfPages = MINIMUM_NUMBER_OF_PAGE_PER_DOCUMENT +
                     random.nextInt(MAXIMUM_NUMBER_OF_PAGE_PER_DOCUMENT - MINIMUM_NUMBER_OF_PAGE_PER_DOCUMENT); // Adding 1 to ensure document is at least one page in length
             String documentName = "cwk" + i;
@@ -31,18 +37,23 @@ public class Student implements Runnable {
             Document document = new Document(this.name, documentName, numberOfPages);
             printer.printDocument(document);
 
-            int MINIMUM_SLEEPING_TIME = 1000;
-            int MAXIMUM_SLEEPING_TIME = 5000;
-            int sleepingTime = MINIMUM_SLEEPING_TIME + random.nextInt(MAXIMUM_SLEEPING_TIME - MINIMUM_SLEEPING_TIME);
-            try {
-                Thread.sleep(sleepingTime);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                System.out.printf("%s was interrupted during sleeping time after printing \'%s\' document.\n",
-                        sleepingTime, documentName);
+            // Excerpt from spec
+            // Student's behaviour is to ... He/she should "sleep" for a random amount of time between each printing request.
+            boolean lastDocument = i == numberOfDocumentsPerStudent;
+            if (!lastDocument) {
+                int MINIMUM_SLEEPING_TIME = 1000;
+                int MAXIMUM_SLEEPING_TIME = 5000;
+                int sleepingTime = MINIMUM_SLEEPING_TIME + random.nextInt(MAXIMUM_SLEEPING_TIME - MINIMUM_SLEEPING_TIME);
+                try {
+                    Thread.sleep(sleepingTime);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    System.out.printf("%s was interrupted during sleeping time after printing \'%s\' document.\n",
+                            sleepingTime, documentName);
+                }
             }
         }
 
-        System.out.printf("Student %s finished printing documents.\n", name);
+        System.out.printf(ConsoleColors.GREEN + "Student %s finished printing documents.\n" + ConsoleColors.RESET, name);
     }
 }
