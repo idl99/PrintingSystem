@@ -11,11 +11,13 @@ public class LaserPrinter implements ServicePrinter {
     private int currentPaperLevel;
     private int currentTonerLevel;
     private int numberOfDocumentsPrinted;
+    private ThreadGroup students;
 
-    public LaserPrinter(String id, int initialPaperLevel, int initialTonerLevel) {
+    public LaserPrinter(String id, int initialPaperLevel, int initialTonerLevel, ThreadGroup students) {
         this.id = id;
         this.currentPaperLevel = initialPaperLevel;
         this.currentTonerLevel = initialTonerLevel;
+        this.students = students;
         this.numberOfDocumentsPrinted = 0;
     }
 
@@ -27,6 +29,9 @@ public class LaserPrinter implements ServicePrinter {
                     "Toner need not be replaced at this time. Current Toner Level is %d\n", currentTonerLevel);
             try {
                 wait(5000);
+                if(allStudentsHaveFinishedPrinting()) {
+                    return;
+                }
                 tonerCannotBeReplaced = currentTonerLevel >= MINIMUM_TONER_LEVEL;
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -43,6 +48,10 @@ public class LaserPrinter implements ServicePrinter {
                         // will not execute
     }
 
+    private boolean allStudentsHaveFinishedPrinting() {
+        return students.activeCount() < 1;
+    }
+
     @Override
     public synchronized void refillPaper() {
         boolean printerCannotBeRefilled = (currentPaperLevel + SHEETS_PER_PACK) > FULL_PAPER_TRAY;
@@ -52,6 +61,9 @@ public class LaserPrinter implements ServicePrinter {
                     "Current paper level is %d and Maximum paper level is %d.\n", currentPaperLevel, FULL_PAPER_TRAY);
             try {
                 wait(5000);
+                if(allStudentsHaveFinishedPrinting()) {
+                    return;
+                }
                 printerCannotBeRefilled = (currentPaperLevel + SHEETS_PER_PACK) > FULL_PAPER_TRAY;
             } catch (InterruptedException e) {
                 e.printStackTrace();
