@@ -6,11 +6,11 @@ set Users = { ihan, deshan }
 PRINTER = UNLOCKED_PRINTER[3],
 UNLOCKED_PRINTER[i: PAPERS] = (acquire -> LOCKED_PRINTER[i]),
 LOCKED_PRINTER[i: PAPERS] = (when(i > 0) release -> UNLOCKED_PRINTER[i-1] 
-							| when(i == 0) fill -> UNLOCKED_PRINTER[3]).
+							| when(i == 0) fill -> release -> UNLOCKED_PRINTER[3]).
 
 STUDENT(DOCUMENTS = 1) = USE_PRINTER[0],
 USE_PRINTER[i: 0..3] = (when (i < DOCUMENTS) acquire -> (printDocument[i+1] -> release -> USE_PRINTER[i + 1] 
-						| fill -> USE_PRINTER[i])).
+						| fill -> release -> USE_PRINTER[i])) + { print }. // alphabet extension
 
 || USERS = ( ihan: STUDENT(3) || deshan: STUDENT(2) ).
 || PRINTING_SYSTEM = ( USERS || Users :: PRINTER ).
