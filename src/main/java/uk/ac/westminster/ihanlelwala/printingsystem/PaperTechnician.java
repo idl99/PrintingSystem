@@ -2,6 +2,9 @@ package uk.ac.westminster.ihanlelwala.printingsystem;
 
 import java.util.Random;
 
+/**
+ * defines the behavior of a Paper Technician, who refills the paper tray of a printer with paper
+ */
 public class PaperTechnician implements Runnable {
 
     private String threadGroup;

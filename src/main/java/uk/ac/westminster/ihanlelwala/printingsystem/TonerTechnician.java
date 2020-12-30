@@ -2,6 +2,9 @@ package uk.ac.westminster.ihanlelwala.printingsystem;
 
 import java.util.Random;
 
+/**
+ * defines the behavior of a Toner Technician, who refills the toner cartridge of a printer
+ */
 public class TonerTechnician implements Runnable {
 
     private String threadGroup;

@@ -1,7 +1,9 @@
 package uk.ac.westminster.ihanlelwala.printingsystem;
 
 /**
- * TODO add comments for the methods
+ * defines the attributes and methods for the functions of a Laser Printer
+ *
+ * Additional References
  * https://www.geeksforgeeks.org/object-level-class-level-lock-java/
  * https://www.baeldung.com/cs/monitor
  */
@@ -21,6 +23,12 @@ public class LaserPrinter implements ServicePrinter {
         this.numberOfDocumentsPrinted = 0;
     }
 
+    /**
+     * method to replace Toner cartridge of printer
+     *
+     * toner can only be replaced when current toner level goes below the minimum toner level specified in {@link ServicePrinter#MINIMUM_TONER_LEVEL}
+     * when toner cartridge is replaced, toner level goes upto full toner level specified in {@link ServicePrinter#FULL_TONER_LEVEL}
+     */
     @Override
     public synchronized void replaceTonerCartridge() {
         boolean tonerCannotBeReplaced = currentTonerLevel >= MINIMUM_TONER_LEVEL;
@@ -48,10 +56,21 @@ public class LaserPrinter implements ServicePrinter {
                         // will not execute
     }
 
+    /**
+     * method which tell us whether all students have finishing printing their documents
+     *
+     * @return true if all students have finishing printing their documents, false if otherwise.
+     */
     private boolean allStudentsHaveFinishedPrinting() {
         return students.activeCount() < 1;
     }
 
+    /**
+     * method to refill paper tray of printer with paper
+     *
+     * paper tray can only be refilled if the new paper level does not exceed the full (maximum) paper level specified in {@link ServicePrinter#FULL_PAPER_TRAY}
+     * each paper refill increases the paper level by the number of papers in pack specified in {@link ServicePrinter#SHEETS_PER_PACK}
+     */
     @Override
     public synchronized void refillPaper() {
         boolean printerCannotBeRefilled = (currentPaperLevel + SHEETS_PER_PACK) > FULL_PAPER_TRAY;
@@ -79,6 +98,17 @@ public class LaserPrinter implements ServicePrinter {
                         // will not execute
     }
 
+    /**
+     * method to print a document
+     *
+     * a student can print a document only if there is sufficient paper and toner to print the given document. Else
+     * student has to wait until notified by a technician (after refilling paper or replacing toner cartridge)
+     * to attempt to print the document again
+     *
+     * printing a document reduces both the paper level and toner level by the number of pages in the document
+     *
+     * @param document the {@link Document} to be printed by the student.
+     */
     @Override
     public synchronized void printDocument(Document document) {
 
@@ -124,12 +154,13 @@ public class LaserPrinter implements ServicePrinter {
     }
 
     /**
-     * TODO determine whether this method should also be synchronized
-     *  to ensure data correctness
-     * @return
+     * this method returns a string representation of the printer's current staate
+     *
+     * @return string containing {@link #id}, LaserPrinter{@link #currentPaperLevel},
+     * {@link #currentTonerLevel}, LaserPrinter{@link #numberOfDocumentsPrinted}
      */
     @Override
-    public String toString() {
+    public synchronized String toString() {
         return "LaserPrinter{" +
                 "PrinterID: '" + id + '\'' + ", " +
                 "Paper Level: " + currentPaperLevel + ", " +

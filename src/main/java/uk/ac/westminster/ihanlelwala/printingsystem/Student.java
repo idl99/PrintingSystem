@@ -2,6 +2,9 @@ package uk.ac.westminster.ihanlelwala.printingsystem;
 
 import java.util.Random;
 
+/**
+ * defines the behavior of a Student, who uses the printer to print documents
+ */
 public class Student implements Runnable {
 
     private String threadGroup;
@@ -23,7 +26,6 @@ public class Student implements Runnable {
 
             int MINIMUM_NUMBER_OF_PAGE_PER_DOCUMENT = 1;
 
-            // TODO verify if the following assumption is okay
             // If this is greater than the Toner Level, then there is a problem eventually where Toner won't refill
             // because Toner Level hasn't dropped below the specified threshold.
             // But a student may want to print a document with more pages than the current toner level.
