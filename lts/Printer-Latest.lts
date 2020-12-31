@@ -3,7 +3,7 @@ range PAPERS = 0..3
 const EMPTY_PAPER_TRAY = 0
 const FULL_PAPER_TRAY = 3
 
-set PRINT_ACTIONS = {acquire, printDocument[1..3], acquireRefill, refill, release}
+set PRINT_ACTIONS = {acquire, printDocument[1..3], acquireRefill, fill, release}
 
 PRINTER = UNLOCKED_PRINTER[FULL_PAPER_TRAY],
 UNLOCKED_PRINTER[papersInTray: PAPERS] = (acquire -> LOCKED_PRINTER[papersInTray]),
