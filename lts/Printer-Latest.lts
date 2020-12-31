@@ -1,16 +1,40 @@
-// FULLY WORKING
-
 range PAPERS = 0..3
-set Users = { ihan, deshan }
 
-PRINTER = UNLOCKED_PRINTER[3],
-UNLOCKED_PRINTER[i: PAPERS] = (acquire -> LOCKED_PRINTER[i]),
-LOCKED_PRINTER[i: PAPERS] = (when(i > 0) release -> UNLOCKED_PRINTER[i-1] 
-							| when(i == 0) fill -> release -> UNLOCKED_PRINTER[3]).
+const EMPTY_PAPER_TRAY = 0
+const FULL_PAPER_TRAY = 3
 
-STUDENT(DOCUMENTS = 1) = USE_PRINTER[0],
-USE_PRINTER[i: 0..3] = (when (i < DOCUMENTS) acquire -> (printDocument[i+1] -> release -> USE_PRINTER[i + 1] 
-						| fill -> release -> USE_PRINTER[i])) + { print }. // alphabet extension
+set PRINT_ACTIONS = {acquire, printDocument[1..3], acquireRefill, refill, release}
 
-|| USERS = ( ihan: STUDENT(3) || deshan: STUDENT(2) ).
-|| PRINTING_SYSTEM = ( USERS || Users :: PRINTER ).
+PRINTER = UNLOCKED_PRINTER[FULL_PAPER_TRAY],
+UNLOCKED_PRINTER[papersInTray: PAPERS] = (acquire -> LOCKED_PRINTER[papersInTray]),
+LOCKED_PRINTER[papersInTray: PAPERS] = 
+					if(papersInTray - 1 > EMPTY_PAPER_TRAY) 
+					then (release -> UNLOCKED_PRINTER[papersInTray - 1])
+					else (release -> EMPTY_PRINTER),
+EMPTY_PRINTER = (acquireRefill -> release -> UNLOCKED_PRINTER[FULL_PAPER_TRAY]).
+
+STUDENT(DOCUMENTS = 1) = USE_PRINTER[1],
+USE_PRINTER[documentNo: 1..DOCUMENTS] = (acquire -> printDocument[documentNo] -> release ->
+								if(documentNo + 1 <= DOCUMENTS) // student has finished printing his/her documents
+								then USE_PRINTER[documentNo + 1]) + PRINT_ACTIONS.
+
+TECHNICIAN = (acquireRefill -> fill -> release -> TECHNICIAN | wait -> TECHNICIAN) + PRINT_ACTIONS.
+
+||PRINTING_SYSTEM = ( a: STUDENT(3) || b: STUDENT(2) || c: TECHNICIAN || { a, b, c } :: PRINTER ).
+
+// This code achieves mutual exclusion amongst the users
+
+// PRINTER = ( acquire -> release -> PRINTER ).
+// STUDENT = ( acquire -> use -> release -> STUDENT ).
+// TECHNICIAN = (acquire -> fill -> release -> TECHNICIAN).
+// 
+// ||PRINTING_SYSTEM = ( a: STUDENT || b: STUDENT || c: TECHNICIAN || { a, b, c } :: PRINTER ).
+
+
+
+//PRINTER = UNLOCKED_PRINTER[3],
+//UNLOCKED_PRINTER[i: PAPERS] = (acquire -> LOCKED_PRINTER[i]),
+//LOCKED_PRINTER[i: PAPERS] = 
+//					if(i > 0)
+//					then (release -> UNLOCKED_PRINTER[i-1])
+//					else (release -> UNLOCKED_PRINTER[0]).
