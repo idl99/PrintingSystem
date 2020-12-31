@@ -5,19 +5,19 @@ set STUDENTS = { student1, student2 }
 set USERS = { STUDENTS, technician }
 
 PRINTER = UNLOCKED_PRINTER[FULL_PAPER_TRAY],
-UNLOCKED_PRINTER[papersInTray: PAPERS] = (acquire -> LOCKED_PRINTER[papersInTray]),
+UNLOCKED_PRINTER[papersInTray: PAPERS] = (acquireToPrint -> LOCKED_PRINTER[papersInTray]),
 LOCKED_PRINTER[papersInTray: PAPERS] = 
 					if(papersInTray - 1 > EMPTY_PAPER_TRAY) // if paper tray won't be empty after printing the next document
 					then (release -> UNLOCKED_PRINTER[papersInTray - 1])
 					else (release -> EMPTY_PRINTER),
-EMPTY_PRINTER = (acquireRefill -> release -> UNLOCKED_PRINTER[FULL_PAPER_TRAY]).
+EMPTY_PRINTER = (acquireToRefill -> release -> UNLOCKED_PRINTER[FULL_PAPER_TRAY]).
 
 STUDENT(DOCUMENTS = 1) = USE_PRINTER[1],
-USE_PRINTER[documentNo: 1..DOCUMENTS] = (acquire -> printDocument[documentNo] -> release ->
+USE_PRINTER[documentNo: 1..DOCUMENTS] = (acquireToPrint -> printDocument[documentNo] -> release ->
 								if(documentNo + 1 <= DOCUMENTS) // student has finished printing his/her documents
 								then USE_PRINTER[documentNo + 1]).
 
-TECHNICIAN = (acquireRefill -> fill -> release -> TECHNICIAN | wait -> TECHNICIAN).
+TECHNICIAN = (acquireToRefill -> fill -> release -> TECHNICIAN | wait -> TECHNICIAN).
 
-||PROCESS_PREFIX_LABEL_SETS = ( USERS :: PRINTER ) \ { STUDENTS.acquireRefill, STUDENTS.fill, technician.acquire }.
+||PROCESS_PREFIX_LABEL_SETS = ( USERS :: PRINTER ) \ { STUDENTS.acquireToRefill, STUDENTS.fill, technician.acquireToPrint }.
 ||PRINTING_SYSTEM = ( student1: STUDENT(3) || student2: STUDENT(2) || technician: TECHNICIAN || PROCESS_PREFIX_LABEL_SETS ).
