@@ -4,17 +4,28 @@ import java.util.Random;
 
 /**
  * defines the behavior of a Toner Technician, who refills the toner cartridge of a printer
+ *
+ * initially this class was made to implement {@link Runnable} interface since the spec doesn't have a requirement for
+ * custom Thread behavior. however, later the following note was mentioned in the spec,
+ *
+ * <b>"Note that this class is a thread"</b>
+ *
  */
-public class TonerTechnician implements Runnable {
+public class TonerTechnician extends Thread {
 
-    private String threadGroup;
+    /**
+     * Spec says to store the threadGroup and name in private variables in the {@link TonerTechnician} class
+     * However, the Thread class itself stores the threadGroup and name.
+     * Hence, its a bad practice to store the same information in sub classes (redundancy).
+     * Therefore, i have omitted them here and passed to the super class {@link Thread} through the call
+     * to the super constructor in the {@link TonerTechnician} (sub class) constructor defined below
+     */
+
     private ServicePrinter printer;
-    private String name;
 
-    public TonerTechnician(String threadGroup, ServicePrinter printer, String name) {
-        this.threadGroup = threadGroup;
+    public TonerTechnician(ThreadGroup threadGroup, ServicePrinter printer, String name) {
+        super(threadGroup, name);
         this.printer = printer;
-        this.name = name;
     }
 
     @Override
@@ -43,7 +54,7 @@ public class TonerTechnician implements Runnable {
             }
         }
 
-        System.out.printf("Toner Technician %s finished attempts to replace toner cartridges.\n", name);
+        System.out.printf("Toner Technician %s finished attempts to replace toner cartridges.\n", getName());
     }
 
 }

@@ -5,10 +5,7 @@ public class PrintingSystem {
     public static void main(String[] args) throws InterruptedException {
 
         // The two groups of users involved in this system
-        String studentsThreadGroupName = "students";
-        ThreadGroup students = new ThreadGroup(studentsThreadGroupName);
-
-        String techniciansThreadGroupName = "technicians";
+        ThreadGroup students = new ThreadGroup("students");
         ThreadGroup technicians = new ThreadGroup("technicians");
 
         /*
@@ -27,15 +24,13 @@ public class PrintingSystem {
         */
         ServicePrinter printer = new LaserPrinter("HP Printer", 10, 50, students);
 
-        Thread student1 = new Thread(students, new Student(studentsThreadGroupName, printer, "student1"));
-        Thread student2 = new Thread(students, new Student(studentsThreadGroupName, printer, "student2"));
-        Thread student3 = new Thread(students, new Student(studentsThreadGroupName, printer, "student3"));
-        Thread student4 = new Thread(students, new Student(studentsThreadGroupName, printer, "student4"));
+        Thread student1 = new Student(students, printer, "student1");
+        Thread student2 = new Student(students, printer, "student2");
+        Thread student3 = new Student(students, printer, "student3");
+        Thread student4 = new Student(students, printer, "student4");
 
-        Thread paperTechnician = new Thread(technicians,
-                new PaperTechnician(techniciansThreadGroupName, printer, "paperTechnician"));
-        Thread tonerTechnician = new Thread(technicians,
-                new TonerTechnician(techniciansThreadGroupName, printer, "tonerTechnician"));
+        Thread paperTechnician = new PaperTechnician(technicians, printer, "paperTechnician");
+        Thread tonerTechnician = new TonerTechnician(technicians, printer, "tonerTechnician");
 
         // start the threads so that they enter the runnable state and await their turn of execution
         // however, we cannot assure which thread will actually execute first or the order in which they'll execute

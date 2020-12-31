@@ -4,17 +4,28 @@ import java.util.Random;
 
 /**
  * defines the behavior of a Paper Technician, who refills the paper tray of a printer with paper
+ *
+ * initially this class was made to implement {@link Runnable} interface since the spec doesn't have a requirement for
+ * custom Thread behavior. however, later the following note was mentioned in the spec,
+ *
+ * <b>"Note that this class is a thread"</b>
+ *
  */
-public class PaperTechnician implements Runnable {
+public class PaperTechnician extends Thread {
 
-    private String threadGroup;
+    /**
+     * Spec says to store the threadGroup and name in private variables in the {@link PaperTechnician} class
+     * However, the Thread class itself stores the threadGroup and name.
+     * Hence, its a bad practice to store the same information in sub classes (redundancy).
+     * Therefore, i have omitted them here and passed to the super class {@link Thread} through the call
+     * to the super constructor in the {@link PaperTechnician} (sub class) constructor defined below
+     */
+
     private ServicePrinter printer;
-    private String name;
 
-    public PaperTechnician(String threadGroup, ServicePrinter printer, String name) {
-        this.threadGroup = threadGroup;
+    public PaperTechnician(ThreadGroup threadGroup, ServicePrinter printer, String name) {
+        super(threadGroup, name);
         this.printer = printer;
-        this.name = name;
     }
 
     @Override
@@ -42,6 +53,6 @@ public class PaperTechnician implements Runnable {
             }
         }
 
-        System.out.printf("Paper Technician %s finished attempts to refill printer with paper packs.\n", name);
+        System.out.printf("Paper Technician %s finished attempts to refill printer with paper packs.\n", getName());
     }
 }

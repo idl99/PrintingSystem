@@ -4,17 +4,28 @@ import java.util.Random;
 
 /**
  * defines the behavior of a Student, who uses the printer to print documents
+ *
+ * initially this class was made to implement {@link Runnable} interface since the spec doesn't have a requirement for
+ * custom Thread behavior. however, later the following note was mentioned in the spec,
+ *
+ * <b>"Note that this class is a thread"</b>
+ *
  */
-public class Student implements Runnable {
+public class Student extends Thread {
 
-    private String threadGroup;
+    /**
+     * Spec says to store the threadGroup and name in private variables in the {@link Student} class
+     * However, the Thread class itself stores the threadGroup and name.
+     * Hence, its a bad practice to store the same information in sub classes (redundancy).
+     * Therefore, i have omitted them here and passed to the super class {@link Thread} through the call
+     * to the super constructor in the {@link Student} (sub class) constructor defined below
+     */
+
     private Printer printer;
-    private String name;
 
-    public Student(String threadGroup, Printer printer, String name) {
-        this.threadGroup = threadGroup;
+    public Student(ThreadGroup threadGroup, Printer printer, String name) {
+        super(threadGroup, name);
         this.printer = printer;
-        this.name = name;
     }
 
     @Override
@@ -36,7 +47,7 @@ public class Student implements Runnable {
             String documentName = "cwk" + i;
 
             // System.out.printf("Printing document: %s of student: %s with page length: %s.\n", documentName, name, numberOfPages);
-            Document document = new Document(this.name, documentName, numberOfPages);
+            Document document = new Document(this.getName(), documentName, numberOfPages);
             printer.printDocument(document);
 
             // Excerpt from spec
@@ -56,6 +67,6 @@ public class Student implements Runnable {
             }
         }
 
-        System.out.printf(ConsoleColors.GREEN + "Student %s finished printing documents.\n" + ConsoleColors.RESET, name);
+        System.out.printf(ConsoleColors.GREEN + "Student %s finished printing documents.\n" + ConsoleColors.RESET, this.getName());
     }
 }
