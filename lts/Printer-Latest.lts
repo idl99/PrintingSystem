@@ -4,14 +4,18 @@ const FULL_PAPER_TRAY = 3
 
 set Students = { student1, student2 }
 set Users = { Students, technician }
+
+// Actions that should not be performed by Students and Technicians separately
 set StudentProhibitedActions = { acquireToRefill, fill, cannotFill }
 set TechnicianProhibitedActions = { acquireToPrint }
 
 PRINTER = PRINTER_IN_OPERATION[FULL_PAPER_TRAY],
-PRINTER_IN_OPERATION[papersInTray: PAPER_TRAY] = if (papersInTray > EMPTY_PAPER_TRAY)
-									then (acquireToPrint -> release -> PRINTER_IN_OPERATION[papersInTray - 1] | 
-												acquireToRefill -> cannotFill -> release -> PRINTER_IN_OPERATION[papersInTray])
-									else (acquireToRefill -> fill -> release -> PRINTER_IN_OPERATION[FULL_PAPER_TRAY]).
+PRINTER_IN_OPERATION[papersInTray: PAPER_TRAY] = 
+									if (papersInTray > EMPTY_PAPER_TRAY)// there's paper in the tray
+									then (acquireToPrint -> release -> PRINTER_IN_OPERATION[papersInTray - 1]
+											| acquireToRefill -> cannotFill -> release -> PRINTER_IN_OPERATION[papersInTray])
+									else // printer has run out of paper 
+										(acquireToRefill -> fill -> release -> PRINTER_IN_OPERATION[FULL_PAPER_TRAY]).
 
 STUDENT(DOCUMENTS = 1) = USE_PRINTER[1],
 USE_PRINTER[documentNo: 1..DOCUMENTS] = (acquireToPrint -> printDocument[documentNo] -> release ->
