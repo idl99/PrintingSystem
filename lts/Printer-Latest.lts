@@ -1,12 +1,11 @@
 range PAPER_TRAY = 0..3
 const EMPTY_PAPER_TRAY = 0
 const FULL_PAPER_TRAY = 3
+
 set Students = { student1, student2 }
 set Users = { Students, technician }
-
-set StudentProhibitedActions = { acquireToRefill, fill, cannotFill, terminate }
+set StudentProhibitedActions = { acquireToRefill, fill, cannotFill }
 set TechnicianProhibitedActions = { acquireToPrint }
-//set HideActions = { Students.acquireToRefill, Students.fill, technician.acquireToPrint }
 
 PRINTER = PRINTER[FULL_PAPER_TRAY],
 PRINTER[papersInTray: PAPER_TRAY] = if (papersInTray > EMPTY_PAPER_TRAY)
@@ -14,29 +13,12 @@ PRINTER[papersInTray: PAPER_TRAY] = if (papersInTray > EMPTY_PAPER_TRAY)
 										| acquireToRefill -> cannotFill -> release -> PRINTER[papersInTray])
 									else (acquireToRefill -> fill -> release -> PRINTER[FULL_PAPER_TRAY]).
 
-//PRINTER = UNLOCKED_PRINTER[FULL_PAPER_TRAY],
-//UNLOCKED_PRINTER[papersInTray: PAPER_TRAY] = (acquireToPrint -> LOCKED_PRINTER[papersInTray]),
-//LOCKED_PRINTER[papersInTray: PAPER_TRAY] = 
-					// if the paper tray will not be empty after printing the next document
-//					if(papersInTray - 1 > EMPTY_PAPER_TRAY)
-					// a user can acquire the printer to print a document in the next turn
-//					then (release -> UNLOCKED_PRINTER[papersInTray - 1])
-					// else the printer must be refilled in the next turn
-//					else (release -> EMPTY_PRINTER),
-
-// having a separate action (acquireToRefill defined below) helps me achieve the constraint given above since
-// the printer transitions to a state where it can only be acquired to refill, 
-// by a process that shares the same purpose (action).
-//EMPTY_PRINTER = (acquireToRefill -> release -> UNLOCKED_PRINTER[FULL_PAPER_TRAY]).
-
 STUDENT(DOCUMENTS = 1) = USE_PRINTER[1],
 USE_PRINTER[documentNo: 1..DOCUMENTS] = (acquireToPrint -> printDocument[documentNo] -> release ->
-								// if student has not finished printing their documents
-								if(documentNo + 1 <= DOCUMENTS)
-								// proceed to use the printer (in their next turn) to print the next document
-								then USE_PRINTER[documentNo + 1]) + StudentProhibitedActions.
-								// else student has finished printing their documents, and therefore it will terminate
+								if(documentNo + 1 <= DOCUMENTS) // if student has not finished printing their documents
+								then USE_PRINTER[documentNo + 1] // proceed to use the printer (in their next turn) to print their next document
+								else (terminate -> END)) + StudentProhibitedActions.
 
-TECHNICIAN = (acquireToRefill -> { fill, cannotFill } -> release -> TECHNICIAN) + TechnicianProhibitedActions.
-||PROCESS_PREFIXED_WITH_LABEL_SET = ( Users :: PRINTER ).
-||PRINTING_SYSTEM = ( student1: STUDENT(3) || student2: STUDENT(2) || technician: TECHNICIAN || PROCESS_PREFIXED_WITH_LABEL_SET ).
+TECHNICIAN = (acquireToRefill -> { fill, cannotFill } -> release -> TECHNICIAN | terminate -> END) + TechnicianProhibitedActions.
+||PRINTING_SYSTEM = ( student1: STUDENT(3) || student2: STUDENT(2) || technician: TECHNICIAN || Users :: PRINTER )
+						/ { terminate / Users.terminate }.
