@@ -1,0 +1,67 @@
+Checking toner... Toner need not be replaced at this time. Current Toner Level is 50
+[student3][cwk1][6pg] - Printing document with page length: 6.
+[student3][cwk1][6pg] - Successfully printed the document. New Paper Level is 4 and Toner Level is 44.
+[student1][cwk1][7pg] - Out of paper. Current Paper Level is 4.
+[student4][cwk1][1pg] - Printing document with page length: 1.
+[student4][cwk1][1pg] - Successfully printed the document. New Paper Level is 3 and Toner Level is 43.
+[student2][cwk1][5pg] - Out of paper. Current Paper Level is 3.
+Checking paper... Refilling printer with paper... Refilled tray with pack of paper. New Paper Level: 53.
+[student2][cwk1][5pg] - Printing document with page length: 5.
+[student2][cwk1][5pg] - Successfully printed the document. New Paper Level is 48 and Toner Level is 38.
+[student1][cwk1][7pg] - Printing document with page length: 7.
+[student1][cwk1][7pg] - Successfully printed the document. New Paper Level is 41 and Toner Level is 31.
+Checking toner... Toner need not be replaced at this time. Current Toner Level is 31
+[student2][cwk2][5pg] - Printing document with page length: 5.
+[student2][cwk2][5pg] - Successfully printed the document. New Paper Level is 36 and Toner Level is 26.
+[student3][cwk2][3pg] - Printing document with page length: 3.
+[student3][cwk2][3pg] - Successfully printed the document. New Paper Level is 33 and Toner Level is 23.
+[student1][cwk2][1pg] - Printing document with page length: 1.
+[student1][cwk2][1pg] - Successfully printed the document. New Paper Level is 32 and Toner Level is 22.
+Checking paper... Refilling printer with paper... Refilled tray with pack of paper. New Paper Level: 82.
+Checking toner... Toner need not be replaced at this time. Current Toner Level is 22
+[student4][cwk2][7pg] - Printing document with page length: 7.
+[student4][cwk2][7pg] - Successfully printed the document. New Paper Level is 75 and Toner Level is 15.
+[student2][cwk3][1pg] - Printing document with page length: 1.
+[student2][cwk3][1pg] - Successfully printed the document. New Paper Level is 74 and Toner Level is 14.
+[student3][cwk3][7pg] - Printing document with page length: 7.
+[student3][cwk3][7pg] - Successfully printed the document. New Paper Level is 67 and Toner Level is 7.
+[student2][cwk4][2pg] - Printing document with page length: 2.
+[student2][cwk4][2pg] - Successfully printed the document. New Paper Level is 65 and Toner Level is 5.
+Checking paper... Refilling printer with paper... Refilled tray with pack of paper. New Paper Level: 115.
+Checking toner... Toner is low. Current Toner Level is 5. Replacing toner cartridge... Successfully replaced Toner Cartridge. New Toner Level is 505.
+[student1][cwk3][6pg] - Printing document with page length: 6.
+[student1][cwk3][6pg] - Successfully printed the document. New Paper Level is 109 and Toner Level is 499.
+Checking toner... Toner need not be replaced at this time. Current Toner Level is 499
+[student4][cwk3][5pg] - Printing document with page length: 5.
+[student4][cwk3][5pg] - Successfully printed the document. New Paper Level is 104 and Toner Level is 494.
+Paper Technician paperTechnician finished attempts to refill printer with paper packs.
+[student3][cwk4][4pg] - Printing document with page length: 4.
+[student3][cwk4][4pg] - Successfully printed the document. New Paper Level is 100 and Toner Level is 490.
+[student2][cwk5][6pg] - Printing document with page length: 6.
+[student2][cwk5][6pg] - Successfully printed the document. New Paper Level is 94 and Toner Level is 484.
+Student student2 finished printing documents.
+[student1][cwk4][7pg] - Printing document with page length: 7.
+[student1][cwk4][7pg] - Successfully printed the document. New Paper Level is 87 and Toner Level is 477.
+[student4][cwk4][1pg] - Printing document with page length: 1.
+[student4][cwk4][1pg] - Successfully printed the document. New Paper Level is 86 and Toner Level is 476.
+Checking toner... Toner need not be replaced at this time. Current Toner Level is 476
+[student1][cwk5][4pg] - Printing document with page length: 4.
+[student1][cwk5][4pg] - Successfully printed the document. New Paper Level is 82 and Toner Level is 472.
+Student student1 finished printing documents.
+[student3][cwk5][3pg] - Printing document with page length: 3.
+[student3][cwk5][3pg] - Successfully printed the document. New Paper Level is 79 and Toner Level is 469.
+Student student3 finished printing documents.
+[student4][cwk5][2pg] - Printing document with page length: 2.
+[student4][cwk5][2pg] - Successfully printed the document. New Paper Level is 77 and Toner Level is 467.
+Student student4 finished printing documents.
+Checking toner... Toner need not be replaced at this time. Current Toner Level is 467
+Toner Technician tonerTechnician finished attempts to replace toner cartridges.
+
+All tasks completed. Printing printer status...
+
+==================================================
+                PRINTER SUMMARY                  
+=================================================
+LaserPrinter{PrinterID: 'HP Printer', Paper Level: 77, Toner Level: 467, Documents Printed: 20}
+
+Process finished with exit code 0
